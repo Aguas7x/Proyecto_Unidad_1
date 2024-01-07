@@ -7,12 +7,27 @@ definir variable descuento como numerico
 definir variable subtotal como numerico
 definir variable iva como numerico 
 definir variable cupon como caracter
-
+definir variable porcentajeCupon como numerico
+definir variable descuento como numerico
+definir variable Precio_por_cantidad como numerico
+definir variable descuento_cupon como numerico
+definir variable tipo_de_envio como numerico
+definir variable envio_nacional como numerico
+definir variable envio_internacional como numerico
+definir variable envio_local como numerico
+definir variable costo_envio como numerico
+definir variable Peso_producto como numerico
+definir variable Costo_por_peso como numerico
+definir variable Subtotal_sin_impuestos como numerico
+definir variable Total_con_impuestos como numerico
+definir variable impuestos como numerico
+definir variable precio_descuento_cupon como numerico
+definir variable costo como numerico
 
 escribir "Seleccione producto: zapatos, playera, gorra "
 producto <- leerdesdeteclado()
 precio_del_producto <- 0
-iva <- 0.16    // 16%
+
 
 // SE DECLARA CONDICIONALES PARA ASIGNARLE VALOR AL PRODUCTO ELEGIDO 
 si producto = zapatos entonces
@@ -26,7 +41,7 @@ si producto = gorra entonces
     escribir ("El producto cuesta : " + precio_del_producto)
 si no 
     escribir "Favor de elegir entre zapatos, playera o gorra"
-fin 
+fin si
 
 
 
@@ -34,31 +49,85 @@ fin
 
 escribir "Cuantos productos desea comprar? "
 cantidad <- leerdesdeteclado() 
+descuento <- 0
 
 // SE CALCULARA EL SUBTOTAL DEL PRODUCTO
 
 subtotal <- precio_del_producto * cantidad
 
-// SE CALCULARA SI APLICA DESCUENTO POR MAYOREO O CUPON
-descuento <- 0
-escribir "Cuenta con cupon de descuento? 1: Si, 2:No "
+si cantidad < 9 entonces:
+    escribir ("Solo aplica descuento por mayoreo en mas de 10 productos")
+    descuento <- 0
+si no
+    si cantidad >= 10 && cantidad < 20 entonces 
+        descuento <- subtotal * 0.05
+    si cantidad >= 20 && cantidad < 40 entonces
+        descuento <- subtotal * 0.10
+    si cantidad >= 40 entonces
+        descuento <- subtotal * 0.15
+fin si 
+
+Precio_por_cantidad <- subtotal - descuento 
+
+// SE CALCULARA SI APLICA DESCUENTO CUPON
+
+escribir ("Cuenta con cupon de descuento? 1: Si, 2:No ")
 cupon <- leerdesdeteclado()
-cupon <- 0.05     // 5%
+porcentajeCupon <- 0
+descuento_cupon <- 0
 
-si 
-segun cantidad :
-    cantidad = 1
-        entonces escribir ("No aplica descuento")
-    cantidad > 3 
-        descuento <- 
+si cupon = "Sí" entonces
+    escribir ("Ingrese el porcentaje (5, 10, 15) de descuento:" )
+    porcentajeCupon <- leerdesdeteclado()
+    descuento_cupon = Precio_por_cantidad * (porcentajeCupon / 100)
+    precio_descuento_cupon = Precio_por_cantidad - descuento_cupon             // AQUI SE MUESTRA EL COSTO DEL PRODUCTO POR CANTIDAD Y CON DESCUENTO DE CUPON 
+    escribir ("Su subtotal con cupon de descuento es: " + precio_descuento_cupon)
+sino
+    precio_descuento_cupon = Precio_por_cantidad                               // AQUI SE MUESTRA EL COSTO DEL PRODUCTO POR CANTIDAD SIN INCLUIR DESCUENTOS POR CUPON SOLO POR CANTIDAD SI ES QUE APLICA
+    escribir ("Su subototal del producto es: " + precio_descuento_cupon)           
+fin si
 
-descuento <- 0
 
-si cantidad >= 10 entonces 
-		descuento <- subtotal * 0.1
-si cantidad >= 20 entonces
-	descuento <- subtotal * 0.2
-si cantidad >= 50 entonces
-	descuento <- subtotal * 0.3
-//si cantidad <= 10 entonces
-	//descuento <- subtotal    
+// DEFINIR ENVIO NACIONAL O INTERNACIONAL 
+
+escribir ("Tipo de envio: 1: Local, 2: Nacional, 3: Internacional")
+tipo_de_envio <- leerdesdeteclado()
+
+escribir ("Ingresar peso de producto en Kg: 'Costo por peso de producto 3 pesos por Kg' ")
+Peso_producto <- leerdesdeteclado()
+Costo_por_peso <- Peso_producto * 3
+envio_nacional <- 100
+envio_internacional <- 200
+envio_local <- 0 
+costo_envio <- 0 
+
+si tipo_de_envio = 1 entonces
+    costo_envio = envio_local
+si tipo_de_envio = 2 entonces
+    costo_envio = envio_nacional
+si tipo_de_envio = 3 entonces
+    costo_envio = envio_internacional
+
+costo_total_envio <- costo_envio + Costo_por_peso        // AQUI SE MUESTRA EL COSTO DE ENVIO DEL PRODUCTO POR PESO Y TIPO DE ENVIO
+
+
+Subtotal_sin_impuestos <- costo_total_envio + precio_descuento_cupon
+
+
+
+// APLICAR IMPUESTOS
+iva <- 0.16    // 16%
+impuestos <- Subtotal_sin_impuestos * iva                   // EJEMPLO 700 * .16 = 112 PESOS
+Total_con_impuestos <- Subtotal_sin_impuestos + impuestos  // EJEMPLO 700 + 112 PESOS = 812 pesos
+costo_total <- Total_con_impuestos + costo_total_envio
+
+// MOSTRAR COSTO FINAL DESGLOSADO
+
+escribir ("  Costo final del producto:)
+escribir ("  Precio unitario: " + precio_del_producto)
+escribir ("  Precio con descuento: " + precio_descuento_cupon)
+escribir ("  Impuestos: " + impuestos + " pesos")
+escribir ("  Descuento por cantidad: " + descuentoCantidad)
+escribir ("  Costo de envío: " + costo_total_envio)
+escribir ("  -------------------------------------")
+escribir ("  Costo total: " + costo_total +  "Pesos")
