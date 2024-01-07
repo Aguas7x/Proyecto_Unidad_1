@@ -1,0 +1,64 @@
+//DECLARACION DE VARIABLES
+
+definir variable producto como caracter
+definir variable cantidad_a_comprar como numerico
+definir variable precio_del_producto como numerico
+definir variable descuento como numerico
+definir variable subtotal como numerico
+definir variable iva como numerico 
+definir variable cupon como caracter
+
+
+escribir "Seleccione producto: zapatos, playera, gorra "
+producto <- leerdesdeteclado()
+precio_del_producto <- 0
+iva <- 0.16    // 16%
+
+// SE DECLARA CONDICIONALES PARA ASIGNARLE VALOR AL PRODUCTO ELEGIDO 
+si producto = zapatos entonces
+    precio_del_producto = 100
+    escribir ("El producto cuesta : " + precio_del_producto)
+si producto = playera entonces
+    precio_del_producto = 70
+    escribir ("El producto cuesta : " + precio_del_producto)
+si producto = gorra entonces
+    precio_del_producto = 50
+    escribir ("El producto cuesta : " + precio_del_producto)
+si no 
+    escribir "Favor de elegir entre zapatos, playera o gorra"
+fin 
+
+
+
+//SE DEFINIRA LA CANTIDAD DE PRODUCTOS QUE SE DESEA COMPRAR 
+
+escribir "Cuantos productos desea comprar? "
+cantidad <- leerdesdeteclado() 
+
+// SE CALCULARA EL SUBTOTAL DEL PRODUCTO
+
+subtotal <- precio_del_producto * cantidad
+
+// SE CALCULARA SI APLICA DESCUENTO POR MAYOREO O CUPON
+descuento <- 0
+escribir "Cuenta con cupon de descuento? 1: Si, 2:No "
+cupon <- leerdesdeteclado()
+cupon <- 0.05     // 5%
+
+si 
+segun cantidad :
+    cantidad = 1
+        entonces escribir ("No aplica descuento")
+    cantidad > 3 
+        descuento <- 
+
+descuento <- 0
+
+si cantidad >= 10 entonces 
+		descuento <- subtotal * 0.1
+si cantidad >= 20 entonces
+	descuento <- subtotal * 0.2
+si cantidad >= 50 entonces
+	descuento <- subtotal * 0.3
+//si cantidad <= 10 entonces
+	//descuento <- subtotal    
